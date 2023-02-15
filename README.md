@@ -16,34 +16,20 @@ This project is a web application that integrates CesiumJS, a 3D globe and map r
 ## Installation
 To install and run the project locally, follow these steps:
 
-Clone the repository to your local machine: git clone https://github.com/RedAty/map-handler
-Install dependencies by running
-```bash
-npm install
-```
-or
-```bash
-yarn install
-```
-Build the project by running npm run build or yarn build
-```bash
-npm build
-```
-or
-```bash
-yarn build
-```
-
-Start the development server by running npm run dev or yarn dev
-```bash
-npm dev
-```
-or
-```bash
-yarn dev
-```
-
-Open your web browser and navigate to http://127.0.0.1:5173/
+ - Clone the repository to your local machine: git clone https://github.com/RedAty/map-handler
+ - Install dependencies by running
+    ```bash
+    npm install
+    ```
+ - Build the project by running npm run build or yarn build
+    ```bash
+    npm build
+    ```
+ - Start the development server by running npm run dev or yarn dev
+    ```bash
+    npm dev
+    ```
+ - Open your web browser and navigate to http://127.0.0.1:5173/
 
 ## Usage
 Once you have the project running, you can interact with the 3D globe and map by using the user interface provided by the React components. The CesiumJS engine is integrated with React using the react-cesium package, which provides a set of pre-built CesiumJS components that can be easily used in a React application.
