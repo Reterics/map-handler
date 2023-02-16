@@ -56,11 +56,11 @@ export function CesiumViewerComponent() {
     return (
         <div>
             <Viewer ref={ref} full terrainProvider={terrainProvider} baseLayerPicker={false} animation={false} >
-                {entities.map(entity=>(
-                    <Entity position={entity.position} point={entity.point} id={entity.id} description={entity.description}/>
+                {entities.map((entity, index)=>(
+                    <Entity key={index} position={entity.position} point={entity.point} id={entity.id} description={entity.description}/>
                 ))}
             </Viewer>
-            <MapToolBox entities={entities}/>
+            <MapToolBox entities={entities} viewerReference={ref}/>
         </div>
     );
 }

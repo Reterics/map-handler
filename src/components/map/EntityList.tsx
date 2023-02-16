@@ -12,6 +12,9 @@ import NewEntityModal from "./NewEntity";
 export default function EntityListHTML(props: {entities: Entity[]}) {
     const [open, setOpen] = React.useState(false);
 
+    const onSubmit = () => {
+
+    };
     return (
         <div>
             <List sx={{ maxWidth: 300 }}>
@@ -36,7 +39,7 @@ export default function EntityListHTML(props: {entities: Entity[]}) {
                     </ListItem>
                 ))}
             </List>
-            <NewEntityModal open={open} setOpen={setOpen}/>
+            <NewEntityModal open={open} setOpen={setOpen} onSubmit={onSubmit}/>
         </div>
     );
 }
