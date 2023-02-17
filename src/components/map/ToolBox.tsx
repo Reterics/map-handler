@@ -26,6 +26,8 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
             bin: null
         }
         console.error(fileList);
+        const decoder = new TextDecoder('utf-8');
+
         fileList.forEach((file, index) => {
             switch (file.type) {
                 case 'gltf':
@@ -68,6 +70,17 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                             );
                         })
 
+                    }
+                    break;
+                case 'geojson':
+                    if (file.content && file.content instanceof ArrayBuffer) {
+                        const blob = new Blob([file.content], { type: "application/json" });
+                        const blobUrl = URL.createObjectURL(blob);
+                        // const str = decoder.decode(file.content);
+
+                        Cesium.GeoJsonDataSource.load(blobUrl).then(geoJONSource=>{
+                            viewer.dataSources.add(geoJONSource);
+                        });
                     }
                     break;
             }
