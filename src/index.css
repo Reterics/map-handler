@@ -12,6 +12,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
+  --joy-palette-neutral-plainHoverColor: rgba(84, 84, 84, 1) !important;
+  --joy-palette-neutral-plainHoverBg: #edffff !important;
+  --joy-palette-neutral-plainColor: #edffff !important;
+  --joy-palette-neutral-plainBg: rgba(84, 84, 84, 1) !important;
 }
 
 a {

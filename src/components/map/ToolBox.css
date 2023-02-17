@@ -1,0 +1,19 @@
+
+.MuiTabList-root.MuiTabList-horizontal {
+    background-color: rgba(84, 84, 84, 1);
+    border-radius: 0;
+}
+.MuiTabList-root.MuiTabList-horizontal > button {
+    padding: 0;
+    color: #edffff;
+    border-radius: 0;
+}
+.MuiTabList-root.MuiTabList-horizontal > button.Joy-selected {
+    padding: 0;
+    color: rgb(37, 37, 37);
+}
+
+.MuiTabList-root.MuiTabList-horizontal > button:hover {
+    padding: 0;
+    color: rgba(84, 84, 84, 1);
+}

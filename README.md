@@ -10,7 +10,7 @@ This is a project that uses Vite, React, and CesiumJS, all with TypeScript.
 
 ## Description
 
-![Screenshot about map](public/screenshot.png)
+![Screenshot about map](public/screenshot_2.png)
 This project is a web application that integrates CesiumJS, a 3D globe and map rendering engine, with React, a popular front-end JavaScript library, using Vite as the build tool. The project is written in TypeScript, a typed superset of JavaScript, for improved developer experience and code maintainability.
 
 ## Installation

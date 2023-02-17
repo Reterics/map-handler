@@ -11,6 +11,8 @@ import {CesiumComponentRef} from "resium";
 import * as Cesium from "cesium";
 import {convertKMZtoKML, mergeGltfAndBinContent} from "../../commons/data";
 
+import "./ToolBox.css";
+
 export default function MapToolBox(props: {entities: Entity[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
 
     const onUpload = (fileList: UploadedFile[], e: React.MouseEvent<HTMLInputElement>, resetFiles:Function) => {
@@ -140,10 +142,9 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                 right: 10,
                 bottom: 40,
                 position: "fixed",
-                backgroundColor: '#ffffffcc',
-                color: "black",
+                backgroundColor: 'rgba(38, 38, 38, 0.95)',
+                color: "#edffff",
                 '--Tabs-gap': '0px',
-                borderRadius: 'sm',
                 boxShadow: 'sm',
                 overflow: 'auto',
                 border: `1px solid ${theme.vars.palette.divider}`,
