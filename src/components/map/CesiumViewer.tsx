@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import "cesium/Source/Widgets/widgets.css";
-import {CesiumComponentRef, EntityDescription, Viewer, Entity} from "resium";
-import cesium, {PointGraphics} from "cesium";
-import {createWorldTerrain} from "cesium";
+import {CesiumComponentRef, Entity, Viewer} from "resium";
+import cesium, {Cartesian3, PointGraphics} from "cesium";
+import {createWorldTerrainAsync} from "cesium";
 import { Viewer as CesiumViewer } from "cesium";
 import * as Cesium from "cesium";
 import MapToolBox from "./ToolBox";
@@ -11,7 +11,7 @@ const initialEntities: cesium.Entity[] = [
     {
         id: 'entity-1',
         name: 'Entity-1',
-        position: Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883) as unknown as cesium.PositionProperty,
+        position: Cesium.Cartesian3.fromDegrees(-75.59777, 40.03883, 100) as unknown as cesium.PositionProperty,
         point: {
             pixelSize: 10 as unknown as cesium.Property,
             color: Cesium.Color.YELLOW as unknown as cesium.Property
@@ -20,7 +20,7 @@ const initialEntities: cesium.Entity[] = [
     {
         id: 'entity-2',
         name: 'Entity-2',
-        position: Cesium.Cartesian3.fromDegrees(-75.59777, 40.05883) as unknown as cesium.PositionProperty,
+        position: Cesium.Cartesian3.fromDegrees(-75.59777, 40.05883, 100) as unknown as cesium.PositionProperty,
         point: {
             pixelSize: 10 as unknown as cesium.Property,
             color: Cesium.Color.RED as unknown as cesium.Property
@@ -29,7 +29,7 @@ const initialEntities: cesium.Entity[] = [
     {
         id: 'entity-3',
         name: 'Ferihegy Airport',
-        position: Cesium.Cartesian3.fromDegrees( 19.245164996920238, 47.43693475072539),
+        position: Cesium.Cartesian3.fromDegrees( 19.245164996920238, 47.43693475072539, 100),
         description: "BUD- Budapest Ferihegy Airport Description should be here",
         point: {
             pixelSize: 10,
@@ -50,14 +50,15 @@ export function CesiumViewerComponent() {
         }
     }, []);
 
-    const terrainProvider = createWorldTerrain();
+    // const terrainProvider = createWorldTerrainAsync();
 
 
     return (
         <div>
-            <Viewer ref={ref} full terrainProvider={terrainProvider} baseLayerPicker={false} animation={false} >
+            <Viewer ref={ref} full baseLayerPicker={false} animation={false} >
                 {entities.map((entity, index)=>(
-                    <Entity key={index} position={entity.position} point={entity.point} id={entity.id} description={entity.description}/>
+                    <Entity key={index} position={entity.position} point={entity.point}
+                            id={entity.id} description={entity.description}/>
                 ))}
             </Viewer>
             <MapToolBox entities={entities} viewerReference={ref}/>

@@ -15,7 +15,7 @@ import "./ToolBox.css";
 
 export default function MapToolBox(props: {entities: Entity[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
 
-    const onUpload = (fileList: UploadedFile[], e: React.MouseEvent<HTMLInputElement>, resetFiles:Function) => {
+    const onUpload = async (fileList: UploadedFile[], e: React.MouseEvent<HTMLInputElement>, resetFiles:Function) => {
         const cesiumRef = props.viewerReference.current as CesiumComponentRef<cesium.Viewer>;
         if (!cesiumRef || !cesiumRef.cesiumElement) {
             return console.error('Reference is not defined');
@@ -56,7 +56,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                                 camera: viewer.scene.camera,
                                 canvas: viewer.scene.canvas
                             })
-                        );
+                        ).catch(e=>console.error(e))
                     }
                     break;
                 case 'kmz':
@@ -74,6 +74,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
 
                     }
                     break;
+                case 'application/json':
                 case 'geojson':
                     if (file.content && file.content instanceof ArrayBuffer) {
                         const blob = new Blob([file.content], { type: "application/json" });
@@ -81,6 +82,9 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                         // const str = decoder.decode(file.content);
 
                         Cesium.GeoJsonDataSource.load(blobUrl).then(geoJONSource=>{
+                            console.log(geoJONSource);
+                            console.log(viewer);
+
                             viewer.dataSources.add(geoJONSource);
                         });
                     }
@@ -98,7 +102,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                     url: gltfMerge.gltf,
                     retryAttempts: 1
                 });
-                const loadedModel = viewer.scene.primitives.add(Cesium.Model.fromGltf({
+                const loadedModel = viewer.scene.primitives.add(Cesium.Model.fromGltfAsync({
                     url: resource,
                     show: true,
                     scale: 1.0,
@@ -118,7 +122,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                 });
                 resource.fetch()?.then(a=>{console.error(a);})
 
-                const loadedModel = viewer.scene.primitives.add(Cesium.Model.fromGltf({
+                const loadedModel = viewer.scene.primitives.add(Cesium.Model.fromGltfAsync({
                     url: resource,
                     show: true,
                     scale: 1.0,
@@ -156,7 +160,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                 <Tab>Upload</Tab>
             </TabList>
             <TabPanel value={0} sx={{ p: 3 }} style={{padding: 0}}>
-                <EntityListHTML entities={props.entities}/>
+                <EntityListHTML entities={props.entities} viewerReference={props.viewerReference}/>
             </TabPanel>
             <TabPanel value={1} sx={{ p: 3 }}>
 
