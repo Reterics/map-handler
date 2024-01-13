@@ -6,6 +6,8 @@ import { Viewer as CesiumViewer } from "cesium";
 import * as cesium from "cesium";
 import MapToolBox from "./ToolBox";
 import {MapAsset} from "../../types/map";
+import GUIBox from "./GUIBox";
+import APIConnectorBox from "./APIConnectorBox";
 
 const initialEntities: cesium.Entity[] = [
     new cesium.Entity({
@@ -94,6 +96,7 @@ export function CesiumViewerComponent() {
                 ))}
             </Viewer>
             <MapToolBox entities={assets} setEntities={setAssets} viewerReference={ref}/>
+            <APIConnectorBox/>
         </div>
     );
 }
