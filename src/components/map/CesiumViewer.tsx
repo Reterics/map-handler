@@ -62,7 +62,14 @@ export function CesiumViewerComponent() {
 
     return (
         <div>
-            <Viewer ref={ref} full baseLayerPicker={false} animation={false} >
+            <Viewer ref={ref} full
+                    baseLayerPicker={false}
+                    animation={false}
+                    timeline={false}
+                    navigationHelpButton={false}
+                    navigationInstructionsInitiallyVisible={false}
+                    creditContainer={document.createElement('div')
+            }>
                 {entities.map((entity, index)=>(
                     <Entity key={index} position={entity.position}
                             id={entity.id} description={entity.description}

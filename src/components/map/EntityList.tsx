@@ -32,8 +32,8 @@ export default function EntityListHTML(props: {entities: MapAsset[], viewerRefer
             if (selected) {
                 void view?.flyTo(selected, {
                     offset: {
-                        heading: cesium.Math.toRadians(20.0),
-                        pitch: cesium.Math.toRadians(-70.0),
+                        heading: cesium.Math.toRadians(0.0),
+                        pitch: cesium.Math.toRadians(-90.0),
                         range: 0.0
                     }
                 });

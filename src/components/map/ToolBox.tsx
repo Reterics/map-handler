@@ -136,8 +136,10 @@ export default function MapToolBox({entities, setEntities, viewerReference}: Map
 
         resetFiles();
     };
+
     return (
         <Tabs
+            className="toolbox-container"
             size="sm"
             aria-label="Toolbox"
             defaultValue={0}
@@ -155,8 +157,8 @@ export default function MapToolBox({entities, setEntities, viewerReference}: Map
                 border: `1px solid ${theme.vars.palette.divider}`,
             })}
         >
-            <TabList>
-                <Tab sx={{ py: 1.5 }}>Layers</Tab>
+            <TabList id="tabList">
+                <Tab>Layers</Tab>
                 <Tab>Map</Tab>
                 <Tab>Upload</Tab>
             </TabList>
