@@ -126,3 +126,19 @@ export function getNestedObjValue (obj: any, keys:string[]): any {
         return nestedObject?.[key];
     }, obj)
 }
+
+export function downloadGeneric(filename = 'config.json', body = '', type = 'application/json') {
+    const blob = new Blob([body], { type: type });
+
+    // Create a download link
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = filename;
+
+    // Trigger a click event to start the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Remove the link element from the DOM
+    document.body.removeChild(link);
+}

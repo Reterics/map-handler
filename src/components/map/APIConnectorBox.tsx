@@ -5,9 +5,10 @@ import Add from '@mui/icons-material/Add';
 import IconButton from "@mui/joy/IconButton";
 import {Box} from "@mui/joy";
 import {NativeSelect} from '@mui/material';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
-import {ArrayBufferToString, browseFile, getNestedObjValue} from "../../commons/data";
+import {ArrayBufferToString, browseFile, downloadGeneric, getNestedObjValue} from "../../commons/data";
 import {MapAsset} from "../../types/map";
 import * as cesium from "cesium";
 import {PointGraphics} from "cesium";
@@ -85,11 +86,6 @@ export default function APIConnectorBox({
     }
 
     const queryData = async () => {
-        console.log('Query the following:');
-        console.log(method , target);
-        console.log(values);
-        console.log(mappings);
-
         const body: ConnectorBody = {};
         let query = '';
 
@@ -138,7 +134,6 @@ export default function APIConnectorBox({
                 const entities = array.map(data=>processIncomingData(data));
                 setAssets([...assets, ...entities]);
             }
-            console.log(body);
         } else {
             console.error(response.status);
             const error = await response.text();
@@ -176,15 +171,33 @@ export default function APIConnectorBox({
         }
     }
 
+    const downloadConfig = () => {
+        const output =  {
+            values: values,
+            mappings: mappings,
+            target: target,
+            method: method,
+            version: '1.0'
+        };
+        downloadGeneric('config-api-' + new Date().getTime()+ '.json', JSON.stringify(output));
+    };
+
     return (
         <GUIBox title={"API Connector"} >
             <Stack>
                 <Stack>
                     <Stack direction={"row"} justifyContent={"space-between"}>
                         <h4 style={{marginTop: 0, marginBottom: 0}}>Target</h4>
-                        <IconButton aria-label="Query" size="sm" variant="plain" color="neutral"
-                                    onClick={()=>uploadConfig()}>
-                            <AttachmentIcon />Upload Config</IconButton>
+                        <Box>
+
+                            <IconButton aria-label="Query" size="sm" variant="plain" color="neutral"
+                                        onClick={()=>uploadConfig()}>
+                                <AttachmentIcon />Upload</IconButton>
+                            <IconButton aria-label="Query" size="sm" variant="plain" color="neutral"
+                                        onClick={()=>downloadConfig()}>
+                                <FileDownloadIcon />Download</IconButton>
+
+                        </Box>
                     </Stack>
                     <Stack direction={"row"}>
                         <input name="name" type="text" style={{color: "#edffff"}}
