@@ -6,29 +6,38 @@ import ListItemButton from '@mui/joy/ListItemButton';
 import IconButton from '@mui/joy/IconButton';
 import Add from '@mui/icons-material/Add';
 import Delete from '@mui/icons-material/Delete';
-import cesium, {Entity} from "cesium";
+import * as cesium from "cesium";
 import NewEntityModal from "./NewEntity";
 import {CesiumComponentRef} from "resium";
+import {MapAsset} from "../../types/map";
+import {DataSource} from "cesium";
 
-export default function EntityListHTML(props: {entities: Entity[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
+export default function EntityListHTML(props: {entities: MapAsset[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
     const [open, setOpen] = React.useState(false);
 
     const onSubmit = () => {
 
     };
 
-    const onSelectEntity = (entity: Entity) => {
-        console.log('select');
+    const onSelectEntity = async (entity: MapAsset) => {
         const cesiumRef = props.viewerReference.current as CesiumComponentRef<cesium.Viewer>;
-        console.log(cesiumRef, entity);
         if (cesiumRef.cesiumElement) {
             const view = cesiumRef.cesiumElement;
-            const selected = view.entities.getById(entity.id);
+            let selected;
+            if (entity instanceof cesium.Entity) {
+                selected = view.entities.getById(entity.id);
+            } else if(entity instanceof cesium.GeoJsonDataSource) {
+                selected = view.entities.getById(entity.entities.values[0].id);
+            }
+
             if (selected) {
-                cesiumRef.cesiumElement?.flyTo(selected);
+                void view?.flyTo(selected);
             }
         }
     };
+
+    const listItems = [];
+
 
     return (
         <div>
@@ -42,15 +51,15 @@ export default function EntityListHTML(props: {entities: Entity[], viewerReferen
                 >
                     <ListItemButton onClick={() => setOpen(true)} >Add Layer</ListItemButton>
                 </ListItem>
-                {props.entities.map(entity=>(
-                    <ListItem key={entity.id} onClick={()=>onSelectEntity(entity)}
+                {props.entities.map((entity, index)=>(
+                    <ListItem key={'list-'+index} onClick={()=>onSelectEntity(entity)}
                               endAction={
                                   <IconButton aria-label="Delete" size="sm" color="danger">
                                       <Delete />
                                   </IconButton>
                               }
                     >
-                        <ListItemButton>{entity.name}</ListItemButton>
+                        <ListItemButton>{!(entity instanceof cesium.Primitive) ? entity.name : 'Primitive'}</ListItemButton>
                     </ListItem>
                 ))}
             </List>

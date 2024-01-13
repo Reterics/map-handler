@@ -12,11 +12,12 @@ import * as Cesium from "cesium";
 import {convertKMZtoKML, mergeGltfAndBinContent} from "../../commons/data";
 
 import "./ToolBox.css";
+import {MapToolBoxParams} from "../../types/map";
 
-export default function MapToolBox(props: {entities: Entity[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
+export default function MapToolBox({entities, setEntities, viewerReference}: MapToolBoxParams) {
 
     const onUpload = async (fileList: UploadedFile[], e: React.MouseEvent<HTMLInputElement>, resetFiles:Function) => {
-        const cesiumRef = props.viewerReference.current as CesiumComponentRef<cesium.Viewer>;
+        const cesiumRef = viewerReference.current as CesiumComponentRef<cesium.Viewer>;
         if (!cesiumRef || !cesiumRef.cesiumElement) {
             return console.error('Reference is not defined');
         }
@@ -82,10 +83,10 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                         // const str = decoder.decode(file.content);
 
                         Cesium.GeoJsonDataSource.load(blobUrl).then(geoJONSource=>{
+                            geoJONSource.name = file.name;
                             console.log(geoJONSource);
-                            console.log(viewer);
-
-                            viewer.dataSources.add(geoJONSource);
+                            setEntities([...entities, geoJONSource]);
+                            //viewer.dataSources.add(geoJONSource);
                         });
                     }
                     break;
@@ -160,7 +161,7 @@ export default function MapToolBox(props: {entities: Entity[], viewerReference: 
                 <Tab>Upload</Tab>
             </TabList>
             <TabPanel value={0} sx={{ p: 3 }} style={{padding: 0}}>
-                <EntityListHTML entities={props.entities} viewerReference={props.viewerReference}/>
+                <EntityListHTML entities={entities} viewerReference={viewerReference}/>
             </TabPanel>
             <TabPanel value={1} sx={{ p: 3 }}>
 
