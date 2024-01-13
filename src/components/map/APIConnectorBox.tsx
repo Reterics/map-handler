@@ -55,9 +55,9 @@ export default function APIConnectorBox({
                 if (typeof targetValue === "string" ||
                     typeof targetValue === "number") {
 
-                    if (mapping.name === "description") {
+                    if (mapping.mapping === "description") {
                         outputEntityData.description = String(outputEntityData.description || '');
-                        outputEntityData.description += targetValue;
+                        outputEntityData.description += '<tr><td style="font-weight: bold">'+ mapping.name + '</td><td> ' + targetValue + '</td></tr>';
                     } else {
                         outputEntityData[mapping.mapping] = targetValue
                     }
@@ -65,9 +65,9 @@ export default function APIConnectorBox({
             })
         }
         if (outputEntityData.description) {
-            outputEntityData.description = '<style>.cesium-infoBox-description {background-color: #272726}</style><div>'
+            outputEntityData.description = '<style>.cesium-infoBox-description {background-color: #272726}</style><table style="width: 100%;">'
             + outputEntityData.description +
-            '</div>';
+            '</table>';
         }
 
         return new cesium.Entity({
