@@ -1,8 +1,14 @@
 {
   "name": "map-handler",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "type": "module",
+  "license": "GPL-3.0",
+  "author": {
+    "email": "reterics.attila@gmail.com",
+    "name": "Attila Reterics",
+    "url": "https://reterics.com/"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

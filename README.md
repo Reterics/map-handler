@@ -1,22 +1,20 @@
-# Project Map Handler
-This is a project that uses Vite, React, and CesiumJS, all with TypeScript.
+# Map Handler
 
-# Table of Contents
-1. [Description](#Description)
-2. [Installation](#Installation)
-3. [Usage](#Usage)
-4. [Contributing](#Contributing)
-5. [License](#License)
+This is a Generic Map Visualization project that uses Vite, React, and CesiumJS.
+With this project we can view GeoJSON, KML, KMZ and other Geospatial objects from multiple sources. (File, Remote API)
 
-## Description
+## Features
+ - Manage different datasources, and entities as layers
+ - Load Geojson, Gltf, KML, KMZ Geospatial and/or model data to the 3D Globe
+ - Connect Remote API to receive GeoJSON
 
-![Screenshot about map](public/screenshot_2.png)
-This project is a web application that integrates CesiumJS, a 3D globe and map rendering engine, with React, a popular front-end JavaScript library, using Vite as the build tool. The project is written in TypeScript, a typed superset of JavaScript, for improved developer experience and code maintainability.
+![Features](public/screenshot_3.png)
+
 
 ## Installation
 To install and run the project locally, follow these steps:
 
- - Clone the repository to your local machine: git clone https://github.com/RedAty/map-handler
+ - Clone the repository to your local machine: git clone https://github.com/Reterics/map-handler
  - Install dependencies by running
     ```bash
     npm install
@@ -31,17 +29,10 @@ To install and run the project locally, follow these steps:
     ```
  - Open your web browser and navigate to http://127.0.0.1:5173/
 
-## Usage
-Once you have the project running, you can interact with the 3D globe and map by using the user interface provided by the React components. The CesiumJS engine is integrated with React using the react-cesium package, which provides a set of pre-built CesiumJS components that can be easily used in a React application.
+## Contribute
 
-## Contributing
-If you would like to contribute to this project, please follow these steps:
+There are many ways to [contribute](https://github.com/Reterics/map-handler/blob/main/CONTRIBUTING.md) to Map Handler.
+* [Submit bugs](https://github.com/Reterics/map-handler/issues) and help us verify fixes as they are checked in.
+* Review the [source code changes](https://github.com/Reterics/map-handler/pulls).
+* [Contribute bug fixes](hhttps://github.com/Reterics/map-handler/blob/main/CONTRIBUTING.md).
 
-- Fork the repository to your own GitHub account
-- Create a new branch with a descriptive name for your feature or bug fix
-- Make changes to the code on your branch
-- Push your changes to your forked repository
-- Open a pull request to the original repository with a description of your changes
-
-## License
-This project is licensed under the MIT License.
