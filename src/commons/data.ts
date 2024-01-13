@@ -118,5 +118,11 @@ export function browseFile(): Promise<string | ArrayBuffer | null> {
 export function ArrayBufferToString (arrayBuffer: ArrayBuffer) {
     const textDecoder = new TextDecoder('utf-8'); // Specify the encoding of your data
     return textDecoder.decode(new Uint8Array(arrayBuffer));
+}
 
+export function getNestedObjValue (obj: any, keys:string[]): any {
+    return keys.reduce((nestedObject, key) => {
+        // Use optional chaining to handle undefined properties
+        return nestedObject?.[key];
+    }, obj)
 }

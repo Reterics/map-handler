@@ -4,13 +4,20 @@ import React, {useState} from "react";
 import Add from '@mui/icons-material/Add';
 import IconButton from "@mui/joy/IconButton";
 import {Box} from "@mui/joy";
-import { NativeSelect } from '@mui/material';
+import {NativeSelect} from '@mui/material';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
-import {ArrayBufferToString, browseFile} from "../../commons/data";
+import {ArrayBufferToString, browseFile, getNestedObjValue} from "../../commons/data";
+import {MapAsset} from "../../types/map";
+import * as cesium from "cesium";
+import {PointGraphics} from "cesium";
 
 
-export default function APIConnectorBox() {
+export default function APIConnectorBox({
+    assets, setAssets
+ }:{
+    assets: MapAsset[], setAssets: Function
+}) {
 
     const [values, setValues] = useState<ConnectorValue[]>([])
     const [mappings, setMappings] = useState<ConnectorMapping[]>([])
@@ -36,6 +43,46 @@ export default function APIConnectorBox() {
         });
         setMappings([...modifiedValues]);
     };
+
+    const processIncomingData = (object: IncomingRawJSON) : cesium.Entity=> {
+        const outputEntityData:MappingData = {};
+        if (mappings.length && object) {
+            mappings.forEach(mapping=>{
+                const parsedName = mapping.name.split('.');
+
+                const targetValue = getNestedObjValue(object, parsedName);
+
+                if (typeof targetValue === "string" ||
+                    typeof targetValue === "number") {
+
+                    if (mapping.name === "description") {
+                        outputEntityData.description = String(outputEntityData.description || '');
+                        outputEntityData.description += targetValue;
+                    } else {
+                        outputEntityData[mapping.mapping] = targetValue
+                    }
+                }
+            })
+        }
+        if (outputEntityData.description) {
+            outputEntityData.description = '<style>.cesium-infoBox-description {background-color: #272726}</style><div>'
+            + outputEntityData.description +
+            '</div>';
+        }
+
+        return new cesium.Entity({
+            id: (outputEntityData.name || 'asset') + assets.length.toString(),
+            name: (outputEntityData.name || 'asset') + assets.length.toString(),
+            description: String(outputEntityData.description),
+            position: cesium.Cartesian3.fromDegrees(
+                Number(outputEntityData.lng), Number(outputEntityData.lat),
+                Number(outputEntityData.height || 100)) as unknown as cesium.PositionProperty,
+            point: {
+                pixelSize: Number(outputEntityData.size || 10) as unknown as cesium.Property,
+                color: cesium.Color.YELLOW as unknown as cesium.Property
+            } as PointGraphics
+        });
+    }
 
     const queryData = async () => {
         console.log('Query the following:');
@@ -73,6 +120,24 @@ export default function APIConnectorBox() {
 
         if (response.status >= 200 && response.status < 300) {
             const body = await response.json();
+
+            let array;
+
+            if (Array.isArray(body)) {
+                array = body;
+            } else if (typeof body === "object" && body) {
+                Object.keys(body).forEach(key=>{
+                    const value = body[key];
+                    // Last found array will be used
+                    if (Array.isArray(value)) {
+                        array = value;
+                    }
+                })
+            }
+            if (array) {
+                const entities = array.map(data=>processIncomingData(data));
+                setAssets([...assets, ...entities]);
+            }
             console.log(body);
         } else {
             console.error(response.status);

@@ -19,3 +19,12 @@ interface ConnectorMapping {
 interface ConnectorBody {
     [key: string]: string|number
 }
+
+interface MappingData {
+    [key: string]: string|number
+}
+
+interface IncomingRawJSON {
+    [key: string]: any
+
+}

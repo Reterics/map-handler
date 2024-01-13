@@ -16,7 +16,7 @@ export default function GUIBox({
 
     return (
         <Box sx={(theme) => (Object.assign({
-            width: "50vw",
+            width: "auto",
             left: 10,
             bottom: 40,
             position: "fixed",
