@@ -1,16 +1,13 @@
 import GUIBox from "./GUIBox";
 import Stack from "@mui/joy/Stack";
 import React, {useState} from "react";
-import FormControl from "@mui/joy/FormControl";
-import FormLabel from "@mui/joy/FormLabel";
-import Input from "@mui/joy/Input";
 import Add from '@mui/icons-material/Add';
 import IconButton from "@mui/joy/IconButton";
-import {Box, MenuItem, Select} from "@mui/joy";
-import Option from '@mui/joy/Option';
+import {Box} from "@mui/joy";
 import { NativeSelect } from '@mui/material';
-
+import AttachmentIcon from '@mui/icons-material/Attachment';
 import SendIcon from '@mui/icons-material/Send';
+import {ArrayBufferToString, browseFile} from "../../commons/data";
 
 
 export default function APIConnectorBox() {
@@ -40,18 +37,90 @@ export default function APIConnectorBox() {
         setMappings([...modifiedValues]);
     };
 
-    const queryData = () => {
+    const queryData = async () => {
         console.log('Query the following:');
         console.log(method , target);
         console.log(values);
         console.log(mappings);
+
+        const body: ConnectorBody = {};
+        let query = '';
+
+        values.forEach(data => {
+            const value = data.type === 'number' ? Number(data.value) : data.value;
+
+            if (data.place === 'query') {
+                if (query) {
+                    query+='&'+data.name+'='+value;
+                } else {
+                    query+='?'+data.name+'='+value;
+                }
+            } else if (data.place === 'body') {
+                body[data.name] = value;
+            }
+        })
+
+        const response = await fetch(target + query, {
+            mode: 'cors',
+            method: method,
+            body: Object.keys(body).length ? JSON.stringify(body) : undefined,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json",
+            },
+            redirect: "follow"
+        });
+
+        if (response.status >= 200 && response.status < 300) {
+            const body = await response.json();
+            console.log(body);
+        } else {
+            console.error(response.status);
+            const error = await response.text();
+            console.error(error);
+        }
     };
+
+    const uploadConfig = async () => {
+        const content = await browseFile();
+        if (content) {
+            let json;
+            try {
+                if (typeof content === "string") {
+                    json = JSON.parse(content);
+                } else {
+                    json = JSON.parse(ArrayBufferToString(content));
+                }
+            } catch (e) {
+                console.error(e);
+            }
+            if (json) {
+                if (Array.isArray(json.values)) {
+                    setValues(json.values as ConnectorValue[])
+                }
+                if (Array.isArray(json.mappings)) {
+                    setMappings(json.mappings as ConnectorMapping[])
+                }
+                if (json.target) {
+                    setTarget(json.target)
+                }
+                if (json.method) {
+                    setMethod(json.method);
+                }
+            }
+        }
+    }
 
     return (
         <GUIBox title={"API Connector"} >
             <Stack>
                 <Stack>
-                    <h4 style={{marginTop: 0}}>Target</h4>
+                    <Stack direction={"row"} justifyContent={"space-between"}>
+                        <h4 style={{marginTop: 0, marginBottom: 0}}>Target</h4>
+                        <IconButton aria-label="Query" size="sm" variant="plain" color="neutral"
+                                    onClick={()=>uploadConfig()}>
+                            <AttachmentIcon />Upload Config</IconButton>
+                    </Stack>
                     <Stack direction={"row"}>
                         <input name="name" type="text" style={{color: "#edffff"}}
                                value={target} placeholder={"Target"}

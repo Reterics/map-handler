@@ -85,3 +85,38 @@ export function convertKMZtoKML(kmzFile: string | Uint8Array | number[] | ArrayB
         });
     });
 }
+
+
+export function browseFile(): Promise<string | ArrayBuffer | null> {
+    return new Promise(resolve => {
+        const inputFile = document.createElement('input');
+        inputFile.type = 'file';
+        inputFile.style.display = 'none'; // Hide the input
+        document.body.appendChild(inputFile);
+
+        inputFile.addEventListener('change', (event: Event) => {
+            const target = event.target as HTMLInputElement;
+            const file = target.files ? target.files[0] : null;
+
+            if (file) {
+                const reader = new FileReader();
+
+                reader.onload = e => {
+                    resolve(e.target ? e.target.result: null)
+                };
+
+                reader.readAsText(file);
+            } else {
+                resolve(null);
+            }
+        });
+
+        inputFile.click();
+    })
+}
+
+export function ArrayBufferToString (arrayBuffer: ArrayBuffer) {
+    const textDecoder = new TextDecoder('utf-8'); // Specify the encoding of your data
+    return textDecoder.decode(new Uint8Array(arrayBuffer));
+
+}

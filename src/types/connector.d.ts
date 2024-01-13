@@ -6,7 +6,7 @@ type ConnectorMappingType = 'lat'|'lng'|'name'|'height'|'color'|'size'|'descript
 interface ConnectorValue {
     name: string
 
-    type: ConnectorType
+    type?: ConnectorType
     value: string|number
     place: ConnectorPlace
 }
@@ -14,4 +14,8 @@ interface ConnectorValue {
 interface ConnectorMapping {
     name: string
     mapping: ConnectorMappingType
+}
+
+interface ConnectorBody {
+    [key: string]: string|number
 }
