@@ -10,7 +10,6 @@ import * as cesium from "cesium";
 import NewEntityModal from "./NewEntity";
 import {CesiumComponentRef} from "resium";
 import {MapAsset} from "../../types/map";
-import {DataSource} from "cesium";
 
 export default function EntityListHTML(props: {entities: MapAsset[], viewerReference: React.RefObject<CesiumComponentRef<cesium.Viewer>>}) {
     const [open, setOpen] = React.useState(false);
@@ -31,7 +30,13 @@ export default function EntityListHTML(props: {entities: MapAsset[], viewerRefer
             }
 
             if (selected) {
-                void view?.flyTo(selected);
+                void view?.flyTo(selected, {
+                    offset: {
+                        heading: cesium.Math.toRadians(20.0),
+                        pitch: cesium.Math.toRadians(-70.0),
+                        range: 0.0
+                    }
+                });
             }
         }
     };

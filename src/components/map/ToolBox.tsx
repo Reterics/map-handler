@@ -1,10 +1,10 @@
 import * as React from 'react';
 import Tabs from '@mui/joy/Tabs';
 import TabList from '@mui/joy/TabList';
-import Tab, { tabClasses } from '@mui/joy/Tab';
+import Tab from '@mui/joy/Tab';
 import TabPanel from '@mui/joy/TabPanel';
 import Typography from '@mui/joy/Typography';
-import cesium, {BillboardGraphics, Entity, PositionProperty, Resource, Viewer as CesiumViewer} from "cesium";
+import cesium from "cesium";
 import EntityListHTML from "./EntityList";
 import {FileUploadHTML, UploadedFile} from "../FileUpload";
 import {CesiumComponentRef} from "resium";

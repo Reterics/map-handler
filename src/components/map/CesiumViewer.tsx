@@ -1,8 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import "cesium/Source/Widgets/widgets.css";
-import {CesiumComponentRef, Entity, Viewer, GeoJsonDataSource} from "resium";
-import {DataSource, PointGraphics, Primitive} from "cesium";
-import {createWorldTerrainAsync} from "cesium";
+import {CesiumComponentRef, Entity, Viewer} from "resium";
+import {PointGraphics} from "cesium";
 import { Viewer as CesiumViewer } from "cesium";
 import * as cesium from "cesium";
 import MapToolBox from "./ToolBox";
@@ -51,9 +50,6 @@ export function CesiumViewerComponent() {
         }
     }, []);
 
-    // const terrainProvider = createWorldTerrainAsync();
-
-
     const entities = assets.reduce((array, asset) => {
         if (asset instanceof cesium.Entity) {
             array.push(asset);
@@ -63,8 +59,7 @@ export function CesiumViewerComponent() {
         }
         return array;
     }, [] as cesium.Entity[]) as cesium.Entity[];
-    const Primitives = assets.filter(asset=>asset instanceof Primitive);
-console.log(entities);
+
     return (
         <div>
             <Viewer ref={ref} full baseLayerPicker={false} animation={false} >
