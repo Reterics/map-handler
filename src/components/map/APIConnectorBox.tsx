@@ -1,4 +1,4 @@
-import GUIBox from "./GUIBox";
+import GUIBox from "../GUIBox";
 import Stack from "@mui/joy/Stack";
 import React, {useState} from "react";
 import Add from '@mui/icons-material/Add';
@@ -183,7 +183,7 @@ export default function APIConnectorBox({
     };
 
     return (
-        <GUIBox title={"API Connector"} >
+        <GUIBox title={"API Connector"} draggable={true} >
             <Stack>
                 <Stack>
                     <Stack direction={"row"} justifyContent={"space-between"}>
