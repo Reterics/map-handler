@@ -7,6 +7,7 @@ import * as cesium from "cesium";
 import MapToolBox from "./ToolBox";
 import {MapAsset} from "../../types/map";
 import APIConnectorBox from "./APIConnectorBox";
+import {getImageryProviderViewModels} from "../../lib/getImageryProviderViewModels";
 
 
 const initialEntities: cesium.Entity[] = [
@@ -43,6 +44,9 @@ const initialEntities: cesium.Entity[] = [
 export function CesiumViewerComponent() {
     const ref = useRef<CesiumComponentRef<CesiumViewer>>(null);
     const [assets, setAssets] = useState<MapAsset[]>([]);
+
+    const imageryProviders = getImageryProviderViewModels();
+
     useEffect(() => {
         if (ref.current) {
             const element = ref.current as CesiumComponentRef<cesium.Viewer>;
@@ -65,11 +69,13 @@ export function CesiumViewerComponent() {
     return (
         <div>
             <Viewer ref={ref} full
-                    baseLayerPicker={false}
+                    baseLayerPicker={true}
                     animation={false}
                     timeline={false}
                     navigationHelpButton={false}
                     navigationInstructionsInitiallyVisible={false}
+                    imageryProviderViewModels={imageryProviders}
+                    selectedImageryProviderViewModel={imageryProviders[2]}
                     creditContainer={document.createElement('div')
             }>
                 {entities.map((entity, index)=>(
