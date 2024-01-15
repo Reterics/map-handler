@@ -1,9 +1,8 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useRef, useState} from "react";
 import "cesium/Source/Widgets/widgets.css";
-import {CesiumComponentRef, Entity, Viewer} from "resium";
-import {PointGraphics} from "cesium";
-import { Viewer as CesiumViewer } from "cesium";
+import {Camera, CesiumComponentRef, Entity, Globe, Scene, Viewer} from "resium";
 import * as cesium from "cesium";
+import {SceneMode, Viewer as CesiumViewer} from "cesium";
 import MapToolBox from "./ToolBox";
 import {MapAsset} from "../../types/map";
 import APIConnectorBox from "./APIConnectorBox";
@@ -11,24 +10,6 @@ import {getImageryProviderViewModels} from "../../lib/getImageryProviderViewMode
 
 
 const initialEntities: cesium.Entity[] = [
-    new cesium.Entity({
-        id: 'entity-1',
-        name: 'Entity-1',
-        position: cesium.Cartesian3.fromDegrees(-75.59777, 40.03883, 100) as unknown as cesium.PositionProperty,
-        point: {
-            pixelSize: 10 as unknown as cesium.Property,
-            color: cesium.Color.YELLOW as unknown as cesium.Property
-        } as PointGraphics
-    }),
-    new cesium.Entity({
-        id: 'entity-2',
-        name: 'Entity-2',
-        position: cesium.Cartesian3.fromDegrees(-75.59777, 40.05883, 100) as unknown as cesium.PositionProperty,
-        point: {
-            pixelSize: 10 as unknown as cesium.Property,
-            color: cesium.Color.RED as unknown as cesium.Property
-        } as PointGraphics
-    }),
     new cesium.Entity({
         id: 'entity-3',
         name: 'Ferihegy Airport',
@@ -43,18 +24,12 @@ const initialEntities: cesium.Entity[] = [
 
 export function CesiumViewerComponent() {
     const ref = useRef<CesiumComponentRef<CesiumViewer>>(null);
-    const [assets, setAssets] = useState<MapAsset[]>([]);
+    const [assets, setAssets] = useState<MapAsset[]>(initialEntities);
+
+    cesium.Camera.DEFAULT_VIEW_RECTANGLE = cesium.Rectangle.fromDegrees(14.0, 48, 24.91, 45.74);
+    cesium.Camera.DEFAULT_VIEW_FACTOR = 0;
 
     const imageryProviders = getImageryProviderViewModels();
-
-    useEffect(() => {
-        if (ref.current) {
-            const element = ref.current as CesiumComponentRef<cesium.Viewer>;
-            if (element.cesiumElement) {
-                setAssets(initialEntities);
-            }
-        }
-    }, []);
 
     const entities = assets.reduce((array, asset) => {
         if (asset instanceof cesium.Entity) {
@@ -76,8 +51,12 @@ export function CesiumViewerComponent() {
                     navigationInstructionsInitiallyVisible={false}
                     imageryProviderViewModels={imageryProviders}
                     selectedImageryProviderViewModel={imageryProviders[2]}
+                    sceneMode={SceneMode.SCENE2D}
                     creditContainer={document.createElement('div')
             }>
+                <Scene/>
+                <Globe/>
+                <Camera/>
                 {entities.map((entity, index)=>(
                     <Entity key={index} position={entity.position}
                             id={entity.id} description={entity.description}
